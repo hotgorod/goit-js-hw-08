@@ -10,8 +10,9 @@
 // Для цього додай до проекту і використовуй бібліотеку lodash.throttle.
 
 // ===========================================================
+import throttle from "lodash.throttle";
 const form = document.querySelector('.feedback-form')
-form.addEventListener('input', onFormInput)
+form.addEventListener('input', throttle(onFormInput), 500)
 form.addEventListener('submit', onSubmitForm)
 
 const formFields = {
@@ -32,7 +33,6 @@ function onFormInput(event) {
 
     localStorage.setItem("feedback-form-state", JSON.stringify(formFields))
 }
-
 
 function onSubmitForm(event) {
     event.preventDefault();
