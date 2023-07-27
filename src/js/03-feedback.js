@@ -11,5 +11,52 @@
 
 // ===========================================================
 const form = document.querySelector('.feedback-form')
-console.log(form)
-const 
+form.addEventListener('input', onFormInput)
+form.addEventListener('submit', onSubmitForm)
+
+const formFields = {
+    email: '',
+    message: ''
+}
+
+function onFormInput(event) {
+    const evt = event.target.attributes.name.value
+
+    if (evt === "email") {
+        formFields.email = event.target.value
+    }
+
+    if (evt === "message") {
+        formFields.message = event.target.value
+    }
+
+    localStorage.setItem("feedback-form-state", JSON.stringify(formFields))
+}
+
+
+function onSubmitForm(event) {
+    event.preventDefault();
+    const mail = event.currentTarget.elements.email.value
+    const message = event.currentTarget.elements.message.value
+    
+    const dataForm = {
+        mail, message
+    }
+    console.log(dataForm);
+    localStorage.removeItem("feedback-form-state");
+    event.currentTarget.reset()
+}
+
+
+if (JSON.parse(localStorage.getItem("feedback-form-state")) !== null) {
+    const currentFormValue = JSON.parse(localStorage.getItem("feedback-form-state"));
+    const currentInput = JSON.parse(localStorage.getItem("feedback-form-state"))
+    form.elements.email.value = currentInput.email;
+    form.elements.message.value = currentInput.message;
+}
+    
+
+
+
+
+
