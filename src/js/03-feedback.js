@@ -15,47 +15,45 @@ const form = document.querySelector('.feedback-form')
 form.addEventListener('input', throttle(onFormInput, 500))
 form.addEventListener('submit', onSubmitForm)
 
-const formFields = {
-    email: '',
-    message: ''
-}
+const FEEDBACK_FORM_KEY = "feedback-form-state"
+let formFields = {};
 
 function onFormInput(event) {
-    const evt = event.target.attributes.name.value
-
-    if (evt === "email") {
-        formFields.email = event.target.value
-    }
-
-    if (evt === "message") {
-        formFields.message = event.target.value
-    }
-
-    localStorage.setItem("feedback-form-state", JSON.stringify(formFields))
+  
+    formFields[event.target.name] = event.target.value.trim();
+    localStorage.setItem(FEEDBACK_FORM_KEY, JSON.stringify(formFields))
 }
 
 function onSubmitForm(event) {
     event.preventDefault();
-    const mail = event.currentTarget.elements.email.value
-    const message = event.currentTarget.elements.message.value
-    
-    const dataForm = {
-        mail, message
-    }
-    console.log(dataForm);
-    localStorage.removeItem("feedback-form-state");
+    console.log(formFields);
+    formFields = {};
+    localStorage.removeItem(FEEDBACK_FORM_KEY);
     event.currentTarget.reset()
 }
 
 
-if (JSON.parse(localStorage.getItem("feedback-form-state")) !== null) {
-    const currentFormValue = JSON.parse(localStorage.getItem("feedback-form-state"));
-    const currentInput = JSON.parse(localStorage.getItem("feedback-form-state"))
-    form.elements.email.value = currentInput.email;
-    form.elements.message.value = currentInput.message;
-}
+// if (JSON.parse(localStorage.getItem(FEEDBACK_FORM_KEY)) !== null) {
+//     const currentFormValue = JSON.parse(localStorage.getItem(FEEDBACK_FORM_KEY));
+//     const currentInput = JSON.parse(localStorage.getItem(FEEDBACK_FORM_KEY))
+//     form.elements.email.value = currentInput.email;
+//     form.elements.message.value = currentInput.message;
+// }
     
+const onLoad = () => {
+    try {
+        const data = localStorage.getItem(FEEDBACK_FORM_KEY);
+        if (!data) return;
+        formFields = JSON.parse(data);
+        Object.entries(formFields).forEach(([key, val]) => {
+            form.elements[key].value = val;
+        });
+    } catch (error) {
+        console.log(error.message);
+    }
+};
 
+window.addEventListener('load', onLoad);
 
 
 
