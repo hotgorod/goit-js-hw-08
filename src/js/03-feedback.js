@@ -33,13 +33,6 @@ function onSubmitForm(event) {
 }
 
 
-// if (JSON.parse(localStorage.getItem(FEEDBACK_FORM_KEY)) !== null) {
-//     const currentFormValue = JSON.parse(localStorage.getItem(FEEDBACK_FORM_KEY));
-//     const currentInput = JSON.parse(localStorage.getItem(FEEDBACK_FORM_KEY))
-//     form.elements.email.value = currentInput.email;
-//     form.elements.message.value = currentInput.message;
-// }
-    
 const onLoad = () => {
     try {
         const data = localStorage.getItem(FEEDBACK_FORM_KEY);
